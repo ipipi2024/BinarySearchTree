@@ -187,7 +187,20 @@ class BST:
 			Returns the smallest item (key and value pair) that is greater or equal to key
 			If no such key exists, then (None, None) is returned.
 		'''
-		pass
+		result = (None, None)
+		current = self.root
+
+		while current is not None:
+			if current.key >= key:
+				# Current node is a valid successor
+				result = (current.key, current.value)
+				# Try to find a smaller successor in the left subtree
+				current = current.left
+			else:
+				# Current node is too small, search in right subtree
+				current = current.right
+
+		return result
 
 	def delete(self, key, value = None):
 		'''
