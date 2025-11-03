@@ -202,6 +202,50 @@ class BST:
 
 		return result
 
+	def findparent(self, key):
+		'''
+			Finds and returns the parent Node of the node containing the given key.
+			This is a helper function used internally by other BST methods.
+			Returns None if:
+				- The tree is empty
+				- The key is not found in the tree
+				- The key is the root (root has no parent)
+		'''
+		# Check if tree is empty
+		if self.root is None:
+			return None
+
+		# Check if root has size 1 (only root exists) or if key equals root key
+		if self.root.size == 1 or self.root.key == key:
+			return None
+
+		# Start from root as parent
+		parent = self.root
+
+		while True:
+			if key < parent.key:
+				# Search in left subtree
+				if parent.left is None:
+					# Reached end of tree, key not found
+					return None
+				elif key == parent.left.key:
+					# Found the key in left child
+					return parent
+				else:
+					# Move to left child and continue
+					parent = parent.left
+			else:
+				# Search in right subtree (key >= parent.key)
+				if parent.right is None:
+					# Reached end of tree, key not found
+					return None
+				elif key == parent.right.key:
+					# Found the key in right child
+					return parent
+				else:
+					# Move to right child and continue
+					parent = parent.right
+
 	def delete(self, key, value = None):
 		'''
 			Deletes key and its associated value from the BST.
