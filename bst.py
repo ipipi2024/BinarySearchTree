@@ -264,7 +264,41 @@ class BST:
 			Performs the actual delete operation on a key k, at node x.
 			Returns the root node of the tree after deletion of key k.
 		'''
-		pass
+		# Base case: if x is None, key not found
+		if x is None:
+			return None
+
+		# Find the node to delete
+		if k < x.key:
+			x.left = self.recursive_delete(x.left, k, v)
+		elif k > x.key:
+			x.right = self.recursive_delete(x.right, k, v)
+		else:
+			# Found the key, now check if value matches (if value is specified)
+			if v is not None and x.value != v:
+				# Value doesn't match, don't delete this node
+				# But there might be duplicates in the right subtree
+				x.right = self.recursive_delete(x.right, k, v)
+			else:
+				# Delete this node (key matches and value matches or value is None)
+				# Case 1: Node has no left child
+				if x.left is None:
+					return x.right
+				# Case 2: Node has no right child
+				elif x.right is None:
+					return x.left
+				# Case 3: Node has both children
+				else:
+					# Find the successor (minimum in right subtree)
+					succ_key, succ_value = self.iterative_min(x.right)
+					x.key = succ_key
+					x.value = succ_value
+					# Delete the successor from the right subtree
+					x.right = self.recursive_delete(x.right, succ_key, succ_value)
+
+		# Update size after deletion
+		x.update_size()
+		return x
 
 	def select(self, k):
 		'''
